@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Italiana&display=swap');
+
+:root {
+  font-family: 'DM Sans', sans-serif;
+  --paper: #f7f5ef;
+  --forest: #344638;
+  --clay: #a65f43;
+  color: var(--forest);
+  background: var(--paper);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  --serif: 'Italiana', Georgia, serif;
+}
+
+* { box-sizing: border-box; }
+html { min-width: 320px; scroll-behavior: smooth; }
+body { min-width: 320px; margin: 0; }
+button, a { font: inherit; }
+a:focus-visible { outline: 2px solid var(--clay); outline-offset: 4px; }
+#root { min-height: 100svh; }

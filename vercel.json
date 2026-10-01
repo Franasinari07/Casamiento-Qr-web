@@ -1,0 +1,6 @@
+{
+  "framework": "vite",
+  "installCommand": "cd Casamiento && npm ci",
+  "buildCommand": "cd Casamiento && npm run build",
+  "outputDirectory": "Casamiento/dist"
+}
