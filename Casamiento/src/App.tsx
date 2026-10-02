@@ -1,9 +1,9 @@
 import "./App.css";
 
 export default function App() {
-  const rsvpMessage = encodeURIComponent(
+  /* const rsvpMessage = encodeURIComponent(
     "Hola, confirmo mi asistencia al casamiento de Belén y Agustín. ¡Gracias por invitarme!",
-  );
+  ); */
   const driveFolderUrl = "https://drive.google.com/drive/folders/17FvIz6PpKZQ_HghJpAFot_75pFtAye9s?usp=drive_link";
   const photoPreviews: { src: string; alt: string }[] = [];
 
@@ -14,8 +14,7 @@ export default function App() {
           B <span>&</span> A
         </a>
         <nav aria-label="Navegación principal">
-          <a href="#celebracion">La celebración</a>
-          <a className="nav-rsvp" href="#confirmar">Confirmar asistencia</a>
+          <a href="#coleccion">Colección</a>
         </nav>
       </header>
 
@@ -26,10 +25,10 @@ export default function App() {
           alt="Una celebración de casamiento al aire libre, entre árboles y luces cálidas"
         />
         <div className="hero-content">
-          <p className="eyebrow">Con mucha alegría, queremos invitarte</p>
+          <p className="eyebrow">Con mucha alegría, queremos invitarte a recordar este momento</p>
           <h1 id="hero-title">Belén <span>&</span> Agustín</h1>
           <p className="hero-date">18 · 11 · 2026 <span aria-hidden="true">/</span> Santa Fe</p>
-          <a className="hero-link" href="#celebracion">Descubrí los detalles <span aria-hidden="true">↓</span></a>
+          <a className="hero-link" href="#coleccion">Ver la colección <span aria-hidden="true">↓</span></a>
         </div>
         <p className="hero-side-note" aria-hidden="true">UN DÍA · UNA HISTORIA · PARA SIEMPRE</p>
       </section>
@@ -40,7 +39,7 @@ export default function App() {
         <span className="flourish" aria-hidden="true">✳</span>
       </section>
 
-      <section className="photo-album" id="celebracion" aria-labelledby="photo-album-title">
+      <section className="photo-album" id="coleccion" aria-labelledby="photo-album-title">
         <div className="photo-album-heading">
           <div>
             <p className="section-label">LOS RECUERDOS TAMBIÉN SON TUYOS</p>
@@ -64,14 +63,14 @@ export default function App() {
         </a>
       </section>
 
-      <section className="rsvp" id="confirmar" aria-labelledby="rsvp-title">
+      {/* <section className="rsvp" id="confirmar" aria-labelledby="rsvp-title">
         <p className="section-label">NOS HARÍA MUY FELICES</p>
         <h2 id="rsvp-title">¿Venís a celebrar?</h2>
         <p>Confirmá tu asistencia antes del 1 de septiembre.</p>
         <a className="rsvp-button" href={`https://wa.me/?text=${rsvpMessage}`} target="_blank" rel="noreferrer">
           Confirmar por WhatsApp <span aria-hidden="true">↗</span>
         </a>
-      </section>
+      </section> */}
 
       <footer className="site-footer">
         <a className="monogram" href="#inicio" aria-label="Volver al inicio">B <span>&</span> A</a>

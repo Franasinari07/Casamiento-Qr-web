@@ -96,7 +96,7 @@
 .photo-grid img:nth-child(1), .photo-grid img:nth-child(2) { grid-column: span 3; aspect-ratio: 1.45 / 1; }
 .photo-grid img:nth-child(n + 3) { grid-column: span 2; }
 .photo-empty { margin: 0; padding: 52px 20px; border-top: 1px solid rgba(246,241,231,.3); border-bottom: 1px solid rgba(246,241,231,.3); color: #e2e2d6; font: italic 22px/1.4 var(--serif); text-align: center; }
-.album-more { display: inline-block; margin-top: 25px; padding-bottom: 6px; border-bottom: 1px solid rgba(246,241,231,.55); color: var(--paper); }
+.album-more { display: block; width: fit-content; margin: 25px auto 0; padding-bottom: 6px; border-bottom: 1px solid rgba(246,241,231,.55); color: var(--paper); }
 .album-more span { color: var(--clay); }
 
 .rsvp { padding: 91px 24px 100px; background: #e8e9df; color: var(--forest); text-align: center; }
