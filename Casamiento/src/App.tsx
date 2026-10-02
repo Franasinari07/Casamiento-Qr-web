@@ -4,9 +4,8 @@ export default function App() {
   const rsvpMessage = encodeURIComponent(
     "Hola, confirmo mi asistencia al casamiento de Belén y Agustín. ¡Gracias por invitarme!",
   );
-  const mapUrl = "https://maps.google.com/?q=Salón+Monumental+VIP";
-  const calendarUrl =
-    "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Casamiento+de+Bel%C3%A9n+y+Agust%C3%ADn&dates=20261121T000000/20261121T230000&details=Nos+casamos%2C+te+esperamos&location=Salón+Monumental+VIP,+Santa+Fe";
+  const driveFolderUrl = "https://drive.google.com/drive/folders/REEMPLAZAR_ID_DE_CARPETA";
+  const photoPreviews: { src: string; alt: string }[] = [];
 
   return (
     <main>
@@ -41,44 +40,28 @@ export default function App() {
         <span className="flourish" aria-hidden="true">✳</span>
       </section>
 
-      <section className="celebration" id="celebracion" aria-labelledby="celebration-title">
-        <div className="celebration-heading">
-          <p className="section-label">GUARDÁ LA FECHA</p>
-          <h2 id="celebration-title">Una tarde para<br />celebrar juntos.</h2>
-          <a className="text-link" href={calendarUrl} target="_blank" rel="noreferrer">
-            Agregar al calendario <span aria-hidden="true">↗</span>
+      <section className="photo-album" id="celebracion" aria-labelledby="photo-album-title">
+        <div className="photo-album-heading">
+          <div>
+            <p className="section-label">LOS RECUERDOS TAMBIÉN SON TUYOS</p>
+            <h2 id="photo-album-title">Revive la celebración.</h2>
+          </div>
+          <a className="album-button" href={driveFolderUrl} target="_blank" rel="noreferrer">
+            Subir fotos <span aria-hidden="true">↗</span>
           </a>
         </div>
-        <div className="event-details">
-          <article className="detail-row">
-            <span className="detail-number">01</span>
-            <div>
-              <h3>Cuándo</h3>
-              <p>Sábado 21 de noviembre de 2026</p>
-              <p className="detail-secondary">Ceremonia · 18:00 h</p>
-              <p className="detail-secondary">Fiesta · 21:00 h a 05:00 h</p>
-            </div>
-          </article>
-          <article className="detail-row">
-            <span className="detail-number">02</span>
-            <div>
-              <h3>Dónde</h3>
-              <p>Salón Monumental</p>
-              <p className="detail-secondary">Santa Fe</p>
-              <a className="text-link" href={mapUrl} target="_blank" rel="noreferrer">
-                Cómo llegar <span aria-hidden="true">↗</span>
-              </a>
-            </div>
-          </article>
-          <article className="detail-row">
-            <span className="detail-number">03</span>
-            <div>
-              <h3>Vestimenta</h3>
-              <p>Mujeres: No usar Beige ni Blanco <span> Hombres: Blanco en la camisa</span></p>
-              <p className="detail-secondary">Dejá el blanco para la novia :)</p>
-            </div>
-          </article>
-        </div>
+        {photoPreviews.length > 0 ? (
+          <div className="photo-grid">
+            {photoPreviews.slice(0, 5).map((photo) => (
+              <img key={photo.src} src={photo.src} alt={photo.alt} loading="lazy" />
+            ))}
+          </div>
+        ) : (
+          <p className="photo-empty">Pronto compartiremos las fotos de este día.</p>
+        )}
+        <a className="text-link album-more" href={driveFolderUrl} target="_blank" rel="noreferrer">
+          Ver todas las fotos <span aria-hidden="true">↗</span>
+        </a>
       </section>
 
       <section className="rsvp" id="confirmar" aria-labelledby="rsvp-title">

@@ -3,7 +3,7 @@
 :root {
   font-family: 'DM Sans', sans-serif;
   --paper: #f7f5ef;
-  --forest: #344638;
+  --forest: #626b43;
   --clay: #a65f43;
   color: var(--forest);
   background: var(--paper);
