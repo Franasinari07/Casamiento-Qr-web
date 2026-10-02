@@ -100,7 +100,7 @@ export default function App() {
         <div className="hero-content">
           <p className="eyebrow">Con mucha alegría, queremos invitarte a recordar este momento</p>
           <h1 id="hero-title">Belén <span>&</span> Agustín</h1>
-          <p className="hero-date">18 · 11 · 2026 <span aria-hidden="true">/</span> Santa Fe</p>
+          <p className="hero-date">21 · 11 · 2026 <span aria-hidden="true">/</span> Santa Fe</p>
           <div className="hero-actions">
             <a className="hero-upload-link" href={driveFolderUrl}>
               Subir fotos <span aria-hidden="true">↗</span>
