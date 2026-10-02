@@ -29,10 +29,14 @@ export default function App() {
           <p className="eyebrow">Con mucha alegría, queremos invitarte a recordar este momento</p>
           <h1 id="hero-title">Belén <span>&</span> Agustín</h1>
           <p className="hero-date">18 · 11 · 2026 <span aria-hidden="true">/</span> Santa Fe</p>
-          <a className="hero-upload-link" href={driveFolderUrl}>
-            Subir fotos <span aria-hidden="true">↗</span>
-          </a>
-          <a className="hero-album-link" href={driveFolderUrl}>Ver álbum <span aria-hidden="true">↗</span></a>
+          <div className="hero-actions">
+            <a className="hero-upload-link" href={driveFolderUrl}>
+              Subir fotos <span aria-hidden="true">↗</span>
+            </a>
+            <a className="hero-album-link" href={driveFolderUrl}>
+              Ver álbum <span aria-hidden="true">↗</span>
+            </a>
+          </div>
           <a className="hero-link" href="#coleccion">Ver álbum <span aria-hidden="true">↓</span></a>
         </div>
         <p className="hero-side-note" aria-hidden="true">UN DÍA · UNA HISTORIA · PARA SIEMPRE</p>
