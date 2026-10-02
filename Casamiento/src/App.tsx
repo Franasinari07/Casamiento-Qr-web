@@ -4,7 +4,7 @@ export default function App() {
   const rsvpMessage = encodeURIComponent(
     "Hola, confirmo mi asistencia al casamiento de Belén y Agustín. ¡Gracias por invitarme!",
   );
-  const driveFolderUrl = "https://drive.google.com/drive/folders/REEMPLAZAR_ID_DE_CARPETA";
+  const driveFolderUrl = "https://drive.google.com/drive/folders/17FvIz6PpKZQ_HghJpAFot_75pFtAye9s?usp=drive_link";
   const photoPreviews: { src: string; alt: string }[] = [];
 
   return (
