@@ -73,6 +73,7 @@
 .hero-actions { display: none; }
 .hero-album-link { display: none; }
 .hero-upload-link { display: none; }
+.photo-file-input { display: none; }
 .hero-side-note { position: absolute; right: 28px; bottom: 26px; margin: 0; font-size: 8px; letter-spacing: 1.4px; writing-mode: vertical-rl; }
 
 .intro {
@@ -109,14 +110,19 @@
 
 .photo-viewer { width: min(1000px, calc(100% - 32px)); height: min(90svh, 900px); max-width: none; max-height: none; padding: 0; border: 0; color: var(--paper); background: #171a14; }
 .photo-viewer::backdrop { background: rgba(18, 24, 17, .82); backdrop-filter: blur(3px); }
-.photo-viewer-content { position: relative; display: grid; width: 100%; height: 100%; grid-template-columns: 48px minmax(0, 1fr) 48px; align-items: center; gap: 16px; padding: 64px 24px 24px; }
+.photo-viewer-content { position: relative; display: flex; width: 100%; height: 100%; flex-direction: column; align-items: center; gap: 12px; padding: 64px 24px 20px; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
 .photo-viewer-close { position: absolute; top: 12px; right: 16px; display: grid; width: 44px; height: 44px; place-items: center; border: 0; color: var(--paper); background: transparent; font-size: 32px; cursor: pointer; }
 .photo-viewer-nav { display: grid; width: 44px; height: 44px; place-items: center; border: 1px solid rgba(246,241,231,.55); color: var(--paper); background: transparent; font-size: 30px; cursor: pointer; }
 .photo-viewer-nav:disabled { cursor: not-allowed; opacity: .35; }
-.photo-viewer-figure { display: flex; min-width: 0; height: 100%; flex-direction: column; align-items: center; justify-content: center; gap: 14px; margin: 0; }
-.photo-viewer-figure img { display: block; max-width: 100%; max-height: calc(90svh - 150px); object-fit: contain; }
-.photo-viewer-figure figcaption { display: flex; width: 100%; justify-content: space-between; gap: 16px; color: #e2e2d6; font-size: 12px; }
+.photo-viewer-figure { display: flex; width: 100%; min-width: 0; min-height: 0; flex: 1; flex-direction: column; align-items: center; justify-content: center; gap: 14px; margin: 0; touch-action: pan-y; }
+.photo-viewer-figure img { display: block; max-width: 100%; max-height: calc(90svh - 190px); object-fit: contain; }
+.photo-viewer-controls { display: grid; grid-template-columns: 44px 48px 44px; align-items: center; justify-content: center; gap: 18px; flex: 0 0 48px; }
+.photo-like-button { display: grid; width: 48px; height: 48px; place-items: center; border: 1px solid rgba(246,241,231,.55); color: var(--paper); background: transparent; font-size: 26px; cursor: pointer; }
+.photo-like-button.is-liked { border-color: #d8a98b; color: #f08a82; background: rgba(240,138,130,.12); }
+.photo-like-button:disabled { cursor: not-allowed; opacity: .45; }
+.photo-like-button.is-liked .heart-mark { animation: heart-pop 220ms ease-out; }
+@keyframes heart-pop { 50% { transform: scale(1.35); } }
 
 .rsvp { padding: 91px 24px 100px; background: #e8e9df; color: var(--forest); text-align: center; }
 .rsvp .section-label { margin-bottom: 17px; }
@@ -153,9 +159,11 @@
   .photo-thumbnail:first-child { grid-column: span 2; }
   .photo-thumbnail img { aspect-ratio: 1 / 1; }
   .photo-viewer { width: calc(100% - 16px); height: 90svh; }
-  .photo-viewer-content { grid-template-columns: 36px minmax(0, 1fr) 36px; gap: 8px; padding: 58px 10px 16px; }
-  .photo-viewer-nav { width: 36px; height: 44px; }
-  .photo-viewer-figure img { max-height: calc(90svh - 145px); }
+  .photo-viewer-content { gap: 8px; padding: 58px 10px 14px; }
+  .photo-viewer-controls { grid-template-columns: 42px 46px 42px; gap: 24px; }
+  .photo-viewer-nav { width: 42px; height: 44px; }
+  .photo-like-button { width: 46px; height: 46px; }
+  .photo-viewer-figure img { max-height: calc(90svh - 190px); }
   .rsvp { padding: 74px 20px 80px; }
   .rsvp > p:not(.section-label) { line-height: 1.6; }
   .site-footer { min-height: 72px; padding: 0 22px; }
@@ -171,4 +179,5 @@
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
+  .photo-like-button.is-liked .heart-mark { animation: none; }
 }
