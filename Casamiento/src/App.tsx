@@ -4,7 +4,8 @@ export default function App() {
   /* const rsvpMessage = encodeURIComponent(
     "Hola, confirmo mi asistencia al casamiento de Belén y Agustín. ¡Gracias por invitarme!",
   ); */
-  const driveFolderUrl = "https://drive.google.com/drive/folders/17FvIz6PpKZQ_HghJpAFot_75pFtAye9s?usp=drive_link";
+  const driveFolderId = "17FvIz6PpKZQ_HghJpAFot_75pFtAye9s";
+  const driveFolderUrl = `https://drive.google.com/drive/folders/${driveFolderId}`;
   const photoPreviews: { src: string; alt: string }[] = [];
 
   return (
@@ -28,7 +29,11 @@ export default function App() {
           <p className="eyebrow">Con mucha alegría, queremos invitarte a recordar este momento</p>
           <h1 id="hero-title">Belén <span>&</span> Agustín</h1>
           <p className="hero-date">18 · 11 · 2026 <span aria-hidden="true">/</span> Santa Fe</p>
-          <a className="hero-link" href="#coleccion">Ver la colección <span aria-hidden="true">↓</span></a>
+          <a className="hero-upload-link" href={driveFolderUrl}>
+            Subir fotos <span aria-hidden="true">↗</span>
+          </a>
+          <a className="hero-album-link" href={driveFolderUrl}>Ver álbum <span aria-hidden="true">↗</span></a>
+          <a className="hero-link" href="#coleccion">Ver álbum <span aria-hidden="true">↓</span></a>
         </div>
         <p className="hero-side-note" aria-hidden="true">UN DÍA · UNA HISTORIA · PARA SIEMPRE</p>
       </section>
@@ -45,7 +50,7 @@ export default function App() {
             <p className="section-label">LOS RECUERDOS TAMBIÉN SON TUYOS</p>
             <h2 id="photo-album-title">Revive la celebración.</h2>
           </div>
-          <a className="album-button" href={driveFolderUrl} target="_blank" rel="noreferrer">
+          <a className="album-button" href={driveFolderUrl}>
             Subir fotos <span aria-hidden="true">↗</span>
           </a>
         </div>
@@ -58,8 +63,8 @@ export default function App() {
         ) : (
           <p className="photo-empty">Pronto compartiremos las fotos de este día.</p>
         )}
-        <a className="text-link album-more" href={driveFolderUrl} target="_blank" rel="noreferrer">
-          Ver todas las fotos <span aria-hidden="true">↗</span>
+        <a className="text-link album-more" href={driveFolderUrl}>
+          Ver álbum <span aria-hidden="true">↗</span>
         </a>
       </section>
 
