@@ -47,6 +47,19 @@ export default defineConfig([
 
 ```
 
+## Google Drive Photo Gallery
+
+The gallery shows up to five public images from the configured Drive folder and opens them in an in-page viewer. Upload links still open the regular Drive folder so guests can select photos from their phones.
+
+To sync newly uploaded images automatically:
+
+1. Enable the Google Drive API in a Google Cloud project and create an API key.
+2. Restrict the key to the Google Drive API and the website's HTTP referrers. Add `http://localhost:5173/*` for local development and the deployed site's domain.
+3. Set `VITE_GOOGLE_DRIVE_API_KEY` in `Casamiento/.env.local` for local work and in the Vercel project's environment variables for deployment.
+4. Make the folder accessible to anyone with the link as a viewer. Guests still need editor access to upload.
+
+The key is included in the browser bundle, so API and referrer restrictions are required. Without the key, the gallery displays the current first photo as a fallback and cannot discover later uploads.
+
 You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
 
 ```js

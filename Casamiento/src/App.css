@@ -69,7 +69,7 @@
 .hero h1 span { color: #d8a98b; font-style: italic; }
 .hero-date { margin: 25px 0 0; font-size: 12px; letter-spacing: 1.3px; text-transform: uppercase; }
 .hero-date span { padding: 0 10px; color: #d8a98b; }
-.hero-link { display: inline-flex; gap: 12px; margin-top: 44px; padding-bottom: 7px; border-bottom: 1px solid rgba(255,255,255,.65); color: #fff; font-size: 11px; text-decoration: none; }
+.hero-link { display: inline-flex; gap: 12px; margin-top: 44px; padding: 0 0 7px; border: 0; border-bottom: 1px solid rgba(255,255,255,.65); color: #fff; background: transparent; font-size: 11px; text-decoration: none; cursor: pointer; }
 .hero-actions { display: none; }
 .hero-album-link { display: none; }
 .hero-upload-link { display: none; }
@@ -96,13 +96,27 @@
 .album-button span { color: var(--clay); }
 .text-link span { margin-left: 7px; color: #d8a98b; }
 .photo-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
-.photo-grid img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; }
-.photo-grid img:nth-child(1), .photo-grid img:nth-child(2) { grid-column: span 3; aspect-ratio: 1.45 / 1; }
-.photo-grid img:nth-child(n + 3) { grid-column: span 2; }
+.photo-thumbnail { display: block; grid-column: span 2; min-width: 0; padding: 0; overflow: hidden; border: 0; background: #4d5637; cursor: pointer; }
+.photo-thumbnail:first-child, .photo-thumbnail:nth-child(2) { grid-column: span 3; }
+.photo-thumbnail img { display: block; width: 100%; aspect-ratio: 1.45 / 1; object-fit: cover; transition: transform 180ms ease; }
+.photo-thumbnail:hover img { transform: scale(1.025); }
 .photo-empty { margin: 0; padding: 52px 20px; border-top: 1px solid rgba(246,241,231,.3); border-bottom: 1px solid rgba(246,241,231,.3); color: #e2e2d6; font: italic 22px/1.4 var(--serif); text-align: center; }
+.photo-status { margin: 14px 0 0; color: #e2e2d6; font-size: 12px; text-align: center; }
 .album-more { display: flex; width: fit-content; align-items: center; gap: 12px; margin: 25px auto 0; padding: 14px 19px; border: 1px solid rgba(246,241,231,.55); color: var(--paper); background: transparent; font-size: 11px; text-decoration: none; transition: background-color 160ms ease; }
 .album-more:hover { background: rgba(246,241,231,.1); }
 .album-more span { color: var(--clay); }
+.album-more:disabled { cursor: not-allowed; opacity: .55; }
+
+.photo-viewer { width: min(1000px, calc(100% - 32px)); height: min(90svh, 900px); max-width: none; max-height: none; padding: 0; border: 0; color: var(--paper); background: #171a14; }
+.photo-viewer::backdrop { background: rgba(18, 24, 17, .82); backdrop-filter: blur(3px); }
+.photo-viewer-content { position: relative; display: grid; width: 100%; height: 100%; grid-template-columns: 48px minmax(0, 1fr) 48px; align-items: center; gap: 16px; padding: 64px 24px 24px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+.photo-viewer-close { position: absolute; top: 12px; right: 16px; display: grid; width: 44px; height: 44px; place-items: center; border: 0; color: var(--paper); background: transparent; font-size: 32px; cursor: pointer; }
+.photo-viewer-nav { display: grid; width: 44px; height: 44px; place-items: center; border: 1px solid rgba(246,241,231,.55); color: var(--paper); background: transparent; font-size: 30px; cursor: pointer; }
+.photo-viewer-nav:disabled { cursor: not-allowed; opacity: .35; }
+.photo-viewer-figure { display: flex; min-width: 0; height: 100%; flex-direction: column; align-items: center; justify-content: center; gap: 14px; margin: 0; }
+.photo-viewer-figure img { display: block; max-width: 100%; max-height: calc(90svh - 150px); object-fit: contain; }
+.photo-viewer-figure figcaption { display: flex; width: 100%; justify-content: space-between; gap: 16px; color: #e2e2d6; font-size: 12px; }
 
 .rsvp { padding: 91px 24px 100px; background: #e8e9df; color: var(--forest); text-align: center; }
 .rsvp .section-label { margin-bottom: 17px; }
@@ -126,7 +140,7 @@
   .hero-date { font-size: 10px; letter-spacing: .8px; }
   .hero-link { display: none; }
   .hero-actions { position: absolute; right: 25px; bottom: calc(24px + env(safe-area-inset-bottom)); left: 25px; display: flex; flex-direction: column; gap: 12px; }
-  .hero-album-link, .hero-upload-link { display: flex; width: 100%; align-items: center; justify-content: center; gap: 12px; margin: 0; padding: 15px 20px; border: 1px solid rgba(255,255,255,.65); color: #fff; font-size: 13px; text-decoration: none; }
+  .hero-album-link, .hero-upload-link { display: flex; width: 100%; align-items: center; justify-content: center; gap: 12px; margin: 0; padding: 15px 20px; border: 1px solid rgba(255,255,255,.65); color: #fff; background: transparent; appearance: none; font-size: 13px; text-decoration: none; cursor: pointer; }
   .hero-side-note { right: 14px; bottom: 16px; font-size: 7px; }
   .intro { padding: 74px 25px 80px; }
   .intro-copy { font-size: 28px; }
@@ -135,9 +149,13 @@
   .photo-album h2 { font-size: 45px; }
   .album-button { display: none; }
   .photo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-  .photo-grid img:nth-child(1), .photo-grid img:nth-child(2), .photo-grid img:nth-child(n + 3) { grid-column: span 1; aspect-ratio: 1 / 1; }
-  .photo-grid img:first-child { grid-column: span 2; aspect-ratio: 1.35 / 1; }
-  .photo-empty { padding: 38px 16px; font-size: 20px; }
+  .photo-thumbnail, .photo-thumbnail:first-child, .photo-thumbnail:nth-child(2) { grid-column: span 1; }
+  .photo-thumbnail:first-child { grid-column: span 2; }
+  .photo-thumbnail img { aspect-ratio: 1 / 1; }
+  .photo-viewer { width: calc(100% - 16px); height: 90svh; }
+  .photo-viewer-content { grid-template-columns: 36px minmax(0, 1fr) 36px; gap: 8px; padding: 58px 10px 16px; }
+  .photo-viewer-nav { width: 36px; height: 44px; }
+  .photo-viewer-figure img { max-height: calc(90svh - 145px); }
   .rsvp { padding: 74px 20px 80px; }
   .rsvp > p:not(.section-label) { line-height: 1.6; }
   .site-footer { min-height: 72px; padding: 0 22px; }
