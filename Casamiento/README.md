@@ -47,18 +47,21 @@ export default defineConfig([
 
 ```
 
-## Google Drive Photo Gallery
+## Google Drive Photo Upload
 
-The gallery shows up to five public images from the configured Drive folder and opens them in an in-page viewer. Upload links still open the regular Drive folder so guests can select photos from their phones.
+Guests choose photos on the page without signing in to Google. The Vercel API validates and forwards each compressed JPEG to Google Apps Script, which saves it in the configured Drive folder. The `/api/photos` endpoint uses the same script to load the album; no browser Drive API key is needed. The Apps Script source is in `../google-apps-script/Code.gs`.
 
-To sync newly uploaded images automatically:
+### Setup
 
-1. Enable the Google Drive API in a Google Cloud project and create an API key.
-2. Restrict the key to the Google Drive API and the website's HTTP referrers. Add `http://localhost:5173/*` for local development and the deployed site's domain.
-3. Set `VITE_GOOGLE_DRIVE_API_KEY` in `Casamiento/.env.local` for local work and in the Vercel project's environment variables for deployment.
-4. Make the folder accessible to anyone with the link as a viewer. Guests still need editor access to upload.
+1. Create a Google Apps Script project and paste in `google-apps-script/Code.gs`.
+2. In **Project Settings → Script Properties**, add `DRIVE_FOLDER_ID` with the Drive folder ID and `UPLOAD_SECRET` with a random secret of at least 32 characters.
+3. Run `authorizeDriveAccess` once and approve access to Drive.
+4. Deploy as a web app that executes as you and allows access to anyone. Copy its URL ending in `/exec`.
+5. For local development, set `GOOGLE_APPS_SCRIPT_URL` and the same `GOOGLE_APPS_SCRIPT_SECRET` in the repository-root `.env` file. Keep this file private; it is ignored by Git. For a Vercel deployment, set both as server-side environment variables.
+6. Make the Drive folder viewable by anyone with the link so its image thumbnails can be displayed.
+7. Run `npm --prefix Casamiento run dev -- --host 0.0.0.0` from the repository root. Open Vite's network URL on a device connected to the same Wi-Fi.
 
-The key is included in the browser bundle, so API and referrer restrictions are required. Without the key, the gallery displays the current first photo as a fallback and cannot discover later uploads.
+Uploads are converted to JPEG and limited to 3 MB. Likes are saved per browser/device and are not shared between guests.
 
 You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
 
