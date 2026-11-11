@@ -47,21 +47,19 @@ export default defineConfig([
 
 ```
 
-## Google Drive Photo Upload
+## Supabase Photo Upload
 
-Guests choose photos on the page without signing in to Google. The Vercel API validates and forwards each compressed JPEG to Google Apps Script, which saves it in the configured Drive folder. The `/api/photos` endpoint uses the same script to load the album; no browser Drive API key is needed. The Apps Script source is in `../google-apps-script/Code.gs`.
+Guests can upload photos without signing in. The Vercel API validates each compressed JPEG and stores it in Supabase Storage. The Supabase secret key stays on the server; it is never sent to the browser. The photo bucket must be public so guests can view album images.
 
 ### Setup
 
-1. Create a Google Apps Script project and paste in `google-apps-script/Code.gs`.
-2. In **Project Settings → Script Properties**, add `DRIVE_FOLDER_ID` with the Drive folder ID and `UPLOAD_SECRET` with a random secret of at least 32 characters.
-3. Run `authorizeDriveAccess` once and approve access to Drive.
-4. Deploy as a web app that executes as you and allows access to anyone. Copy its URL ending in `/exec`.
-5. For local development, set `GOOGLE_APPS_SCRIPT_URL` and the same `GOOGLE_APPS_SCRIPT_SECRET` in the repository-root `.env` file. Keep this file private; it is ignored by Git. For a Vercel deployment, set both as server-side environment variables.
-6. Make the Drive folder viewable by anyone with the link so its image thumbnails can be displayed.
-7. Run `npm --prefix Casamiento run dev -- --host 0.0.0.0` from the repository root. Open Vite's network URL on a device connected to the same Wi-Fi.
+1. In Supabase, create a **public** Storage bucket named `fotos-casamiento`.
+2. In the repository-root `.env` file, set `SUPABASE_URL` to the project URL and `SUPABASE_SECRET_KEY` to the project's secret key. Keep the key private; `.env` is ignored by Git.
+3. If you chose a different bucket name, set `SUPABASE_STORAGE_BUCKET` to that name. Otherwise, the API uses `fotos-casamiento`.
+4. Add those same variables to the Vercel project's server-side environment variables. Do not use a `VITE_` prefix for the secret key.
+5. Run `npm --prefix Casamiento run dev -- --host 0.0.0.0` from the repository root. Open Vite's network URL on a device connected to the same Wi-Fi.
 
-Uploads are converted to JPEG and limited to 3 MB. Likes are saved per browser/device and are not shared between guests.
+Uploads are converted to JPEG and limited to 3 MB. Likes are saved per browser/device and are not shared between guests. Photos already stored in Google Drive are not copied automatically; they need to be migrated to the Supabase bucket separately.
 
 You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
 

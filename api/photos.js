@@ -1,3 +1,9 @@
+const {
+  getPublicPhotoUrl,
+  getSupabaseConfig,
+  isSameOrigin,
+} = require("./supabase-storage");
+
 function sendJson(response, status, payload) {
   return response.status(status).json(payload);
 }
@@ -8,64 +14,63 @@ module.exports = async function listPhotos(request, response) {
     return sendJson(response, 405, { message: "Método no permitido." });
   }
 
-  const origin = request.headers.origin;
-  const host = request.headers.host;
-  if (origin && host) {
-    try {
-      if (new URL(origin).host.toLowerCase() !== host.toLowerCase()) {
-        return sendJson(response, 403, { message: "Origen no permitido." });
-      }
-    } catch {
-      return sendJson(response, 403, { message: "Origen no permitido." });
-    }
+  if (!isSameOrigin(request)) {
+    return sendJson(response, 403, { message: "Origen no permitido." });
   }
 
-  const scriptUrl = process.env.GOOGLE_APPS_SCRIPT_URL;
-  const uploadSecret = process.env.GOOGLE_APPS_SCRIPT_SECRET;
-  if (!scriptUrl || !uploadSecret || uploadSecret.length < 32) {
-    return sendJson(response, 503, { message: "La lectura del álbum todavía no está configurada." });
-  }
-
-  let deploymentUrl;
-  try {
-    deploymentUrl = new URL(scriptUrl);
-    if (
-      deploymentUrl.protocol !== "https:" ||
-      deploymentUrl.hostname !== "script.google.com" ||
-      !deploymentUrl.pathname.startsWith("/macros/s/") ||
-      !deploymentUrl.pathname.endsWith("/exec")
-    ) {
-      return sendJson(response, 503, { message: "La URL de Apps Script no es válida." });
-    }
-  } catch {
-    return sendJson(response, 503, { message: "La URL de Apps Script no es válida." });
+  const config = getSupabaseConfig();
+  if (!config) {
+    return sendJson(response, 503, { message: "El álbum todavía no está configurado." });
   }
 
   try {
-    const scriptResponse = await fetch(deploymentUrl, {
+    const listUrl = `${config.baseUrl}/storage/v1/object/list/${encodeURIComponent(config.bucket)}`;
+    const supabaseResponse = await fetch(listUrl, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "list", secret: uploadSecret }),
+      headers: {
+        Authorization: `Bearer ${config.secretKey}`,
+        apikey: config.secretKey,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        prefix: "",
+        limit: 1000,
+        offset: 0,
+        sortBy: { column: "created_at", order: "desc" },
+      }),
       signal: AbortSignal.timeout(25000),
     });
-    const result = await scriptResponse.json().catch(() => null);
 
-    if (!scriptResponse.ok || !result?.ok || !Array.isArray(result.files)) {
-      console.error("Google Apps Script rejected an album listing", scriptResponse.status);
-      return sendJson(response, 502, { message: "Drive no pudo cargar las fotos del álbum." });
+    if (!supabaseResponse.ok) {
+      console.error("Supabase rejected an album listing", supabaseResponse.status);
+      return sendJson(response, 502, { message: "Supabase no pudo cargar las fotos del álbum." });
     }
 
-    const files = result.files.filter(
-      (file) =>
-        file &&
-        typeof file.id === "string" &&
-        typeof file.name === "string" &&
-        typeof file.mimeType === "string" &&
-        file.mimeType.startsWith("image/"),
-    );
+    const objects = await supabaseResponse.json();
+    if (!Array.isArray(objects)) {
+      console.error("Supabase returned an invalid album listing");
+      return sendJson(response, 502, { message: "Supabase devolvió una respuesta inválida." });
+    }
+
+    const files = objects
+      .filter(
+        (object) =>
+          object &&
+          typeof object.name === "string" &&
+          typeof object.metadata?.mimetype === "string" &&
+          object.metadata.mimetype.startsWith("image/"),
+      )
+      .map((object) => ({
+        id: object.name,
+        name: object.name,
+        mimeType: object.metadata.mimetype,
+        createdTime: object.created_at,
+        url: getPublicPhotoUrl(config, object.name),
+      }));
+
     return sendJson(response, 200, { files });
   } catch (error) {
-    console.error("Google Apps Script album listing failed", error);
-    return sendJson(response, 502, { message: "No pudimos conectar con Drive." });
+    console.error("Supabase album listing failed", error);
+    return sendJson(response, 502, { message: "No pudimos conectar con Supabase." });
   }
 };

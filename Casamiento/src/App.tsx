@@ -1,18 +1,19 @@
 import "./App.css";
 import { type ChangeEvent, type TouchEvent, useEffect, useRef, useState } from "react";
 
-type DrivePhoto = {
+type Photo = {
   id: string;
   name: string;
   mimeType: string;
   createdTime?: string;
+  url: string;
 };
 
-type DriveFileList = {
-  files?: DrivePhoto[];
+type PhotoList = {
+  files?: Photo[];
 };
 
-type UploadResponse = DrivePhoto & {
+type UploadResponse = Photo & {
   message?: string;
 };
 
@@ -54,17 +55,11 @@ async function preparePhoto(file: File): Promise<Blob> {
   }
 }
 
-const firstUploadedPhoto: DrivePhoto = {
-  id: "1vA-Y3HZO2iMv-1hy_CXrQB7B1DIdIvBZ",
-  name: "negrou.jpeg",
-  mimeType: "image/jpeg",
-};
-
 export default function App() {
   /* const rsvpMessage = encodeURIComponent(
     "Hola, confirmo mi asistencia al casamiento de Belén y Agustín. ¡Gracias por invitarme!",
   ); */
-  const [photos, setPhotos] = useState<DrivePhoto[]>([firstUploadedPhoto]);
+  const [photos, setPhotos] = useState<Photo[]>([]);
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
   const [photoLoadFailed, setPhotoLoadFailed] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -88,14 +83,14 @@ export default function App() {
 
   useEffect(() => {
     let isActive = true;
-    fetch("/api/photos")
+    fetch("/api/photos", { cache: "no-store" })
       .then((response) => {
-        if (!response.ok) throw new Error("No se pudieron cargar las fotos de Drive.");
-        return response.json() as Promise<DriveFileList>;
+        if (!response.ok) throw new Error("No se pudieron cargar las fotos del álbum.");
+        return response.json() as Promise<PhotoList>;
       })
       .then(({ files = [] }) => {
         if (!isActive) return;
-        setPhotos(files.filter((file) => file.mimeType.startsWith("image/")));
+        setPhotos(files.filter((file) => file.mimeType.startsWith("image/") && file.url));
         setPhotoLoadFailed(false);
       })
       .catch(() => {
@@ -154,9 +149,6 @@ export default function App() {
     }
   };
 
-  const photoUrl = (photoId: string) =>
-    `https://drive.google.com/thumbnail?id=${photoId}&sz=w1600`;
-
   const choosePhotos = () => {
     if (!isUploading) photoInputRef.current?.click();
   };
@@ -207,6 +199,7 @@ export default function App() {
       );
     } finally {
       setIsUploading(false);
+      if (uploadedCount > 0) window.location.reload();
     }
   };
 
@@ -234,7 +227,7 @@ export default function App() {
       <section className="hero" id="inicio" aria-labelledby="hero-title">
         <img
           className="hero-image"
-          src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=2200&q=85"
+          src="/casados.jpeg"
           alt="Una celebración de casamiento al aire libre, entre árboles y luces cálidas"
         />
         <div className="hero-content">
@@ -243,14 +236,14 @@ export default function App() {
           <p className="hero-date">21 · 11 · 2026 <span aria-hidden="true">/</span> Santa Fe</p>
           <div className="hero-actions">
             <button className="hero-upload-link" type="button" onClick={choosePhotos} disabled={isUploading}>
-              {isUploading ? "Subiendo…" : "Subir fotos"} <span aria-hidden="true">↗</span>
+              {isUploading ? "Subiendo…" : "Subir fotos"}
             </button>
             <button className="hero-album-link" type="button" onClick={() => openAlbum()}>
-              Ver álbum <span aria-hidden="true">↗</span>
+              Ver álbum
             </button>
           </div>
           <button className="hero-link" type="button" onClick={() => openAlbum()}>
-            Ver álbum <span aria-hidden="true">↗</span>
+            Ver álbum
           </button>
         </div>
         <p className="hero-side-note" aria-hidden="true">UN DÍA · UNA HISTORIA · PARA SIEMPRE</p>
@@ -269,7 +262,7 @@ export default function App() {
             <h2 id="photo-album-title">Revive la celebración.</h2>
           </div>
           <button className="album-button" type="button" onClick={choosePhotos} disabled={isUploading}>
-            {isUploading ? "Subiendo…" : "Subir fotos"} <span aria-hidden="true">↗</span>
+            {isUploading ? "Subiendo…" : "Subir fotos"}
           </button>
         </div>
         {photoUploadStatus && (
@@ -279,7 +272,7 @@ export default function App() {
         )}
         {photos.length > 0 ? (
           <div className="photo-grid">
-            {photos.slice(0, 5).map((photo, index) => (
+            {photos.slice(0, 3).map((photo, index) => (
               <button
                 className="photo-thumbnail"
                 key={photo.id}
@@ -287,7 +280,7 @@ export default function App() {
                 onClick={() => openAlbum(index)}
                 aria-label={`Abrir foto ${index + 1}: ${photo.name}`}
               >
-                <img src={photoUrl(photo.id)} alt={photo.name} loading="lazy" />
+                <img src={photo.url} alt={photo.name} loading="lazy" />
               </button>
             ))}
           </div>
@@ -296,11 +289,11 @@ export default function App() {
         )}
         {photoLoadFailed && (
           <p className="photo-status" role="status">
-            No se pudieron actualizar las fotos; mostramos las imágenes disponibles.
+            No se pudieron cargar las fotos del álbum.
           </p>
         )}
         <button className="text-link album-more" type="button" onClick={() => openAlbum()} disabled={!photos.length}>
-          Ver álbum <span aria-hidden="true">↗</span>
+          Ver álbum
         </button>
       </section>
 
@@ -321,7 +314,7 @@ export default function App() {
               onTouchStart={handlePhotoTouchStart}
               onTouchEnd={handlePhotoTouchEnd}
             >
-              <img src={photoUrl(activePhoto.id)} alt={activePhoto.name} />
+              <img src={activePhoto.url} alt={activePhoto.name} />
             </figure>
           )}
           <div className="photo-viewer-controls" aria-label="Controles del álbum">

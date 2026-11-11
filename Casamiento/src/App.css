@@ -69,10 +69,11 @@
 .hero h1 span { color: #d8a98b; font-style: italic; }
 .hero-date { margin: 25px 0 0; font-size: 12px; letter-spacing: 1.3px; text-transform: uppercase; }
 .hero-date span { padding: 0 10px; color: #d8a98b; }
-.hero-link { display: inline-flex; gap: 12px; margin-top: 44px; padding: 0 0 7px; border: 0; border-bottom: 1px solid rgba(255,255,255,.65); color: #fff; background: transparent; font-size: 11px; text-decoration: none; cursor: pointer; }
+.hero-link { display: inline-flex; gap: 12px; margin-top: 44px; padding: 0 0 7px; border: 0; border-bottom: 1px solid rgba(255,255,255,.65); color: #fff; background: transparent; font-size: 16px; text-decoration: none; cursor: pointer; }
 .hero-actions { display: none; }
 .hero-album-link { display: none; }
 .hero-upload-link { display: none; }
+.hero-link, .hero-album-link, .hero-upload-link, .album-button, .album-more { font-family: var(--serif); font-weight: 400; }
 .photo-file-input { display: none; }
 .hero-side-note { position: absolute; right: 28px; bottom: 26px; margin: 0; font-size: 8px; letter-spacing: 1.4px; writing-mode: vertical-rl; }
 
@@ -92,10 +93,8 @@
 .photo-album-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 35px; }
 .photo-album h2 { margin: 0; font: 400 clamp(38px, 5vw, 60px)/1.08 var(--serif); }
 .photo-album .section-label { color: #e0ad8c; }
-.album-button { display: inline-flex; align-items: center; gap: 25px; flex: 0 0 auto; padding: 15px 19px; color: var(--forest); background: var(--paper); font-size: 11px; text-decoration: none; transition: background-color 160ms ease; }
+.album-button { display: inline-flex; align-items: center; gap: 25px; flex: 0 0 auto; padding: 15px 19px; color: var(--forest); background: var(--paper); font-size: 16px; text-decoration: none; transition: background-color 160ms ease; }
 .album-button:hover { background: #e8e4d9; }
-.album-button span { color: var(--clay); }
-.text-link span { margin-left: 7px; color: #d8a98b; }
 .photo-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
 .photo-thumbnail { display: block; grid-column: span 2; min-width: 0; padding: 0; overflow: hidden; border: 0; background: #4d5637; cursor: pointer; }
 .photo-thumbnail:first-child, .photo-thumbnail:nth-child(2) { grid-column: span 3; }
@@ -103,9 +102,8 @@
 .photo-thumbnail:hover img { transform: scale(1.025); }
 .photo-empty { margin: 0; padding: 52px 20px; border-top: 1px solid rgba(246,241,231,.3); border-bottom: 1px solid rgba(246,241,231,.3); color: #e2e2d6; font: italic 22px/1.4 var(--serif); text-align: center; }
 .photo-status { margin: 14px 0 0; color: #e2e2d6; font-size: 12px; text-align: center; }
-.album-more { display: flex; width: fit-content; align-items: center; gap: 12px; margin: 25px auto 0; padding: 14px 19px; border: 1px solid rgba(246,241,231,.55); color: var(--paper); background: transparent; font-size: 11px; text-decoration: none; transition: background-color 160ms ease; }
+.album-more { display: flex; width: fit-content; align-items: center; gap: 12px; margin: 25px auto 0; padding: 14px 19px; border: 1px solid rgba(246,241,231,.55); color: var(--paper); background: transparent; font-size: 16px; text-decoration: none; transition: background-color 160ms ease; }
 .album-more:hover { background: rgba(246,241,231,.1); }
-.album-more span { color: var(--clay); }
 .album-more:disabled { cursor: not-allowed; opacity: .55; }
 
 .photo-viewer { width: min(1000px, calc(100% - 32px)); height: min(90svh, 900px); max-width: none; max-height: none; padding: 0; border: 0; color: var(--paper); background: #171a14; }
@@ -146,7 +144,7 @@
   .hero-date { font-size: 10px; letter-spacing: .8px; }
   .hero-link { display: none; }
   .hero-actions { position: absolute; right: 25px; bottom: calc(24px + env(safe-area-inset-bottom)); left: 25px; display: flex; flex-direction: column; gap: 12px; }
-  .hero-album-link, .hero-upload-link { display: flex; width: 100%; align-items: center; justify-content: center; gap: 12px; margin: 0; padding: 15px 20px; border: 1px solid rgba(255,255,255,.65); color: #fff; background: transparent; appearance: none; font-size: 13px; text-decoration: none; cursor: pointer; }
+  .hero-album-link, .hero-upload-link { display: flex; width: 100%; align-items: center; justify-content: center; gap: 12px; margin: 0; padding: 15px 20px; border: 1px solid rgba(255,255,255,.65); color: #fff; background: transparent; appearance: none; font-size: 16px; text-decoration: none; cursor: pointer; }
   .hero-side-note { right: 14px; bottom: 16px; font-size: 7px; }
   .intro { padding: 74px 25px 80px; }
   .intro-copy { font-size: 28px; }
