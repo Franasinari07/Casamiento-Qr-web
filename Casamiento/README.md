@@ -59,7 +59,7 @@ Guests can upload photos without signing in. The Vercel API validates each compr
 4. Add those same variables to the Vercel project's server-side environment variables. Do not use a `VITE_` prefix for the secret key.
 5. Run `npm --prefix Casamiento run dev -- --host 0.0.0.0` from the repository root. Open Vite's network URL on a device connected to the same Wi-Fi.
 
-Uploads are converted to JPEG and limited to 3 MB. Likes are saved per browser/device and are not shared between guests. Photos already stored in Google Drive are not copied automatically; they need to be migrated to the Supabase bucket separately.
+Uploads are converted to JPEG and limited to 3 MB. Likes are saved per browser/device and are not shared between guests. Existing photos are not copied automatically to the Supabase bucket.
 
 You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
 
