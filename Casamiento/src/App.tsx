@@ -76,6 +76,7 @@ export default function App() {
     }
   });
   const albumDialogRef = useRef<HTMLDialogElement>(null);
+  const photoGridDialogRef = useRef<HTMLDialogElement>(null);
   const photoInputRef = useRef<HTMLInputElement>(null);
   const touchStartRef = useRef<{ x: number; y: number } | null>(null);
   const activePhoto = photos[activePhotoIndex] ?? photos[0];
@@ -105,6 +106,15 @@ export default function App() {
   const openAlbum = (photoIndex = 0) => {
     setActivePhotoIndex(photoIndex);
     albumDialogRef.current?.showModal();
+  };
+
+  const openPhotoGrid = () => {
+    photoGridDialogRef.current?.showModal();
+  };
+
+  const openPhotoFromGrid = (photoIndex: number) => {
+    photoGridDialogRef.current?.close();
+    openAlbum(photoIndex);
   };
 
   const changePhoto = (step: number) => {
@@ -203,6 +213,18 @@ export default function App() {
     }
   };
 
+  const renderPhotoThumbnail = (photo: Photo, index: number) => (
+    <button
+      className="photo-thumbnail"
+      key={photo.id}
+      type="button"
+      onClick={() => openAlbum(index)}
+      aria-label={`Abrir foto ${index + 1}: ${photo.name}`}
+    >
+      <img src={photo.url} alt={photo.name} loading="lazy" />
+    </button>
+  );
+
   return (
     <main>
       <input
@@ -271,18 +293,8 @@ export default function App() {
           </p>
         )}
         {photos.length > 0 ? (
-          <div className="photo-grid">
-            {photos.slice(0, 3).map((photo, index) => (
-              <button
-                className="photo-thumbnail"
-                key={photo.id}
-                type="button"
-                onClick={() => openAlbum(index)}
-                aria-label={`Abrir foto ${index + 1}: ${photo.name}`}
-              >
-                <img src={photo.url} alt={photo.name} loading="lazy" />
-              </button>
-            ))}
+          <div className="photo-preview-grid">
+            {photos.slice(0, 3).map((photo, index) => renderPhotoThumbnail(photo, index))}
           </div>
         ) : (
           <p className="photo-empty">Todavía no hay fotos en el álbum.</p>
@@ -292,10 +304,35 @@ export default function App() {
             No se pudieron cargar las fotos del álbum.
           </p>
         )}
-        <button className="text-link album-more" type="button" onClick={() => openAlbum()} disabled={!photos.length}>
+        <button className="text-link album-more" type="button" onClick={openPhotoGrid} disabled={!photos.length}>
           Ver álbum
         </button>
       </section>
+
+      <dialog className="photo-album-dialog" ref={photoGridDialogRef}>
+        <h2 className="visually-hidden">Todas las fotos del álbum</h2>
+        <button
+          className="photo-viewer-close"
+          type="button"
+          onClick={() => photoGridDialogRef.current?.close()}
+          aria-label="Cerrar álbum"
+        >
+          ×
+        </button>
+        <div className="photo-album-grid">
+          {photos.map((photo, index) => (
+            <button
+              className="photo-album-grid-item"
+              key={photo.id}
+              type="button"
+              onClick={() => openPhotoFromGrid(index)}
+              aria-label={`Ver foto ${index + 1}: ${photo.name}`}
+            >
+              <img src={photo.url} alt={photo.name} loading="lazy" />
+            </button>
+          ))}
+        </div>
+      </dialog>
 
       <dialog className="photo-viewer" ref={albumDialogRef} onKeyDown={handleAlbumKeyDown}>
         <div className="photo-viewer-content">
